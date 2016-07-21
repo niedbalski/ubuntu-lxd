@@ -1,51 +1,22 @@
-# Overview
+## Current implemented actions
 
-This charm provides a blank [Ubuntu](http://ubuntu.com) image. It does not provide any services other than a blank cloud image for you to manage manually, it is intended for testing and development.
+* remove-device: Remove a specific device from a given guest.
 
-# Usage
+Example usage:
 
-Step by step instructions on using this charm:
-
-    juju deploy ubuntu
-
-You can then ssh to the instance with:
-
-    juju ssh ubuntu/0
-
-## Scale out Usage
-
-This charm is not designed to be used at scale since it does not have any relationships, however you can bulk add machines with `add-unit`:
-
-    juju add-unit ubuntu      # Add one more
-    juju add-unit -n5 ubuntu  # Add 5 at a time
-
-
-You can also alias names in order to organize a bunch of empty instances:
-
-    juju deploy ubuntu mytestmachine1
-    juju deploy ubuntu mytestmachine2
-
-and so on. 
-
-## Known Limitations and Issues
-
-This charm does not provide anything other than a blank server, so it does not relate to other charms.
-
-# Configuration
-
-This charm has no configuration options.
-
-# Contact Information
-
-
-## Upstream Project Name
-
-- [Ubuntu](http://ubuntu.com)
-- [Bug tracker](http://bugs.launchpad.net/ubuntu)
-- [Ubuntu Server Mailing list](https://lists.ubuntu.com/archives/ubuntu-server/)
-
-## Charm Contact Information
-
-- Author: Juju Charm Community
-- Report bugs at: [http://bugs.launchpad.net/charms/+source/ubuntu](http://bugs.launchpad.net/charms/+source/ubuntu)
-- Location: [http://jujucharms.com/charms/precise/ubuntu](http://jujucharms.com/charms/precise/ubuntu)
+```bash
+$ git clone github.com/niedbalski/ubuntu-lxd ubuntu-lxd
+$ juju deploy ./ubuntu-lxd --to 0 --series xenial 
+```
+The following action will remove the device eth0 (mapped to br-esn3) on the container juju-34ecda-0-lxd-1
+```
+$ juju run-action ubuntu-lxd/0 remove-device container=juju-34ecda-0-lxd-1 device.name="br-ens3" device.type="nic"
+```
+The following is also supported:
+```
+$ juju run-action ubuntu-lxd/0 remove-device container=juju-34ecda-0-lxd-1 device.name="eth0" device.type="nic"
+```
+All the LXD guests from a given host (ubuntu-lxd/0)
+```bash
+$ for unit in $(juju status | grep ubuntu-lxd/0 | grep -Po '.*\/[0-9]+' | awk '{print $4}'); do juju status | grep $unit | grep -Po 'juju\-.*[0-9]+' | xargs -icontainer juju run-action ubuntu-lxd/0 remove-device container=container device.name="eth0" device.type="nic"; done
+```
