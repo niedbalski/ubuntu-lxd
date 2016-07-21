@@ -1,0 +1,6 @@
+branch: lp:charm-helpers
+destination: actions/charmhelpers
+include:
+    - core
+    - cli
+    - fetch

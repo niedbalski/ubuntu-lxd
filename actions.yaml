@@ -1,0 +1,18 @@
+remove-device:
+  description: Remove a specific device from a given LXD guest.
+  params:
+    container:
+      type: string
+      description: LXC container id (displayed as instance-id on juju).
+    device:
+      type: object
+      properties:
+        name:
+          type: string
+          description: device name, in the case of nics the bridge name is accepted.
+        type:
+          type: string
+          description: device type
+          enum: [ nic, disk ]
+
+  required: ["container", "device"]

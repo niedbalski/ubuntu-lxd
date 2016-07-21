@@ -1,0 +1,7 @@
+name: ubuntu-lxd
+summary: Base Ubuntu charm for handling LXD hosts
+maintainer:  Jorge Niedbalski R. <jorge.niedbalski@canonical.com>
+description: |
+  This simply deploys a base ubuntu charm with actions for handling LXD guests.
+tags:
+     - misc
